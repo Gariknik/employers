@@ -1,6 +1,18 @@
+import {useState} from 'react';
 import './employees-add-form.css';
 
 const EmployeesAddForm = ()=>{
+    const [name, setInputName] = useState('');
+    const [salary, setInputSalary] = useState('');
+
+    const onInputValue = (e) => {
+        if (e.target.name === 'name') {
+            setInputName(e.target.value);
+        } else if (e.target.name === 'salary') {
+            setInputSalary(e.target.value);
+        }
+    };
+
     return (
         <div className="app-add-form">
             <h3>Добавьте нового сотрудника</h3>
@@ -8,10 +20,16 @@ const EmployeesAddForm = ()=>{
                 className="add-form d-flex">
                 <input type="text"
                        className="form-control new-post-label"
-                       placeholder="Как его зовут?" />
+                       placeholder="Как его зовут?"
+                       name="name"
+                       value={name}
+                       onChange={onInputValue}/>
                 <input type="number"
                        className="form-control new-post-label"
-                       placeholder="З/П в $?" />
+                       placeholder="З/П в $?"
+                       name="salary"
+                       value={salary}
+                       onChange={onInputValue}/>
 
                 <button type="submit"
                         className="btn btn-outline-light">Добавить</button>
