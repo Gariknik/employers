@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import './employees-add-form.css';
 
-const EmployeesAddForm = ()=>{
+const EmployeesAddForm = ({onAdd})=>{
     const [name, setInputName] = useState('');
     const [salary, setInputSalary] = useState('');
 
@@ -13,11 +13,17 @@ const EmployeesAddForm = ()=>{
         }
     };
 
+    const onSubmit = (e) =>{
+        e.preventDefault();
+        onAdd(name, salary);
+    };
+
     return (
         <div className="app-add-form">
             <h3>Добавьте нового сотрудника</h3>
             <form
-                className="add-form d-flex">
+                className="add-form d-flex"
+                onSubmit = {onSubmit}>
                 <input type="text"
                        className="form-control new-post-label"
                        placeholder="Как его зовут?"
@@ -32,7 +38,8 @@ const EmployeesAddForm = ()=>{
                        onChange={onInputValue}/>
 
                 <button type="submit"
-                        className="btn btn-outline-light">Добавить</button>
+                        className="btn btn-outline-light">
+                    Добавить</button>
             </form>
         </div>
     );
