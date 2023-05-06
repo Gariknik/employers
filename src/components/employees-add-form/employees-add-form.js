@@ -4,6 +4,7 @@ import './employees-add-form.css';
 const EmployeesAddForm = ({onAdd})=>{
     const [name, setInputName] = useState('');
     const [salary, setInputSalary] = useState('');
+    const [isError, setError] = useState(false);
 
     const onInputValue = (e) => {
         if (e.target.name === 'name') {
@@ -15,7 +16,17 @@ const EmployeesAddForm = ({onAdd})=>{
 
     const onSubmit = (e) =>{
         e.preventDefault();
-        onAdd(name, salary);
+        if (name.length > 3 &&
+            salary &&
+            (salary.charAt(0) !== '-' && salary.charAt(0) !== '0')) {
+            onAdd(name, salary);
+            setError(false);
+            setInputName('');
+            setInputSalary('');
+        } else{
+            setError(true);
+        }
+
     };
 
     return (
@@ -41,6 +52,9 @@ const EmployeesAddForm = ({onAdd})=>{
                         className="btn btn-outline-light">
                     Добавить</button>
             </form>
+            <p className={`error-form ${isError ? 'show' : ''}`}>
+                Имя сотрудника должно быть не меньше трёх символ и все поля должны быть заполнены
+            </p>
         </div>
     );
 };
