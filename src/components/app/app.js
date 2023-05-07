@@ -17,8 +17,11 @@ const App = () => {
 
     const [dataState, setData] = useState(data);
     const [newId, setNewId] = useState(4);
+    const [term, setTerm] = useState('');
+    const [filter, setFilter] = useState('all');
     const employees = dataState.length;
     const increased = dataState.filter(item => item.increase).length;
+
 
     const deleteItem = (id) => {
         setData(dataState.filter(elem => elem.id !== id));
@@ -42,24 +45,64 @@ const App = () => {
         }));
     };
 
+    const searchEmp = (items, term) =>{
+        if(term.length === 0) {
+            return items;
+        }
+        return items.filter(item => {
+            return item.name.indexOf(term) > -1;
+        });
+    };
+
+    const onUpdateSearch = (term) => {
+        setTerm(term);
+    };
+
+    const filterEmployees = (items, filter) => {
+        switch (filter) {
+            case "rise":
+                return items.filter(item => item.rise);
+            case "moreThen1000":
+                return items.filter(item => item.salary > 1000);
+            default:
+                return items;
+        }
+    };
+
+    const onFilterSelect = (filter) => {
+        setFilter(filter);
+    };
+
+    const onChangeSalary = (id, newSalary) => {
+        if (newSalary < 0) return dataState;
+        setData(dataState.map(elem => {
+            if (elem.id === id) {
+                return {...elem, salary: newSalary};
+            }
+            return elem;
+        }));
+    };
 
 
+    const visinleData = filterEmployees(searchEmp(dataState, term), filter);
     return (
         <div className="app">
             <AppInfo
                 increased={increased}
                 employees={employees}/>
             <div className="search-panel">
-                <SearchPanel />
-                <AppFilter />
+                <SearchPanel onUpdateSearchMain={onUpdateSearch}/>
+                <AppFilter
+                    onFilterSelect={onFilterSelect}
+                    filter={filter}/>
             </div>
             <EmployeesList
-                data={dataState}
+                data={visinleData}
                 onDelete={deleteItem}
                 onToggleProp={onToggleProp}
-                />
+                onChangeSalary={onChangeSalary}
+            />
             <EmployeesAddForm
-                data={dataState}
                 onAdd={addItem}/>
         </div>
     );

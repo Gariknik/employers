@@ -16,10 +16,8 @@ const EmployeesAddForm = ({onAdd})=>{
 
     const onSubmit = (e) =>{
         e.preventDefault();
-        if (name.length > 3 &&
-            salary &&
-            (salary.charAt(0) !== '-' && salary.charAt(0) !== '0')) {
-            onAdd(name, salary);
+        if (name.length > 3 && salary) {
+            onAdd(name, Number(salary));
             setError(false);
             setInputName('');
             setInputSalary('');
@@ -27,6 +25,12 @@ const EmployeesAddForm = ({onAdd})=>{
             setError(true);
         }
 
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === '-') {
+            e.preventDefault();
+        }
     };
 
     return (
@@ -46,7 +50,8 @@ const EmployeesAddForm = ({onAdd})=>{
                        placeholder="З/П в $?"
                        name="salary"
                        value={salary}
-                       onChange={onInputValue}/>
+                       onChange={onInputValue}
+                       onKeyPress={handleKeyPress}/>
 
                 <button type="submit"
                         className="btn btn-outline-light">
