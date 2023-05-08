@@ -14,13 +14,24 @@ const EmployeesListItem = ({name, salary, increase, onDelete, onToggleProp, rise
         if (e.key === '-') {
             e.preventDefault();
         }
+        if (e.key === ' ' || e.key === 'Spacebar') {
+            e.preventDefault();
+            const span = e.currentTarget;
+            span.click();
+        }
+        if (e.key === 'Tab') {
+            e.stopPropagation();
+        }
     };
 
+
     return (
-        <li className={classNames}>
+        <li className={classNames} >
             <span className="list-group-item-label"
                   onClick={onToggleProp}
-                  data-toggle="rise">{name}</span>
+                  data-toggle="rise"
+                  tabIndex={id}
+                  onKeyDown={handleKeyPress}>{name}</span>
             <input type="text"
                    className="list-group-item-input"
                    defaultValue={salary + '$'}
